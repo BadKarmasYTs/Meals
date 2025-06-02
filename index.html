@@ -2,104 +2,117 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Family Meal Drop Rates</title>
+  <title>🎲 Family Meal RNG</title>
   <style>
     body {
-      font-family: 'Comic Sans MS', sans-serif;
-      background-color: #fff8f0;
-      margin: 0;
-      padding: 0;
+      background: #fff8ec;
+      font-family: 'Comic Sans MS', cursive;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      padding-top: 50px;
       text-align: center;
     }
 
     h1 {
       font-size: 3em;
-      margin-top: 30px;
+      margin-bottom: 10px;
     }
 
-    .meal {
-      margin: 20px auto;
-      max-width: 600px;
-      background-color: #fffcf2;
-      padding: 20px;
+    .button {
+      padding: 15px 30px;
+      background: #ff6961;
+      color: white;
+      border: none;
       border-radius: 20px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.1);
-      position: relative;
-      transition: transform 0.2s ease;
+      font-size: 1.5em;
+      cursor: pointer;
+      box-shadow: 0 5px 0 #c1443c;
+      transition: all 0.2s;
     }
 
-    .meal:hover {
-      transform: scale(1.03) rotate(1deg);
+    .button:active {
+      transform: translateY(4px);
+      box-shadow: 0 2px 0 #c1443c;
     }
 
-    .name {
-      font-size: 2em;
-    }
-
-    .rarity {
-      font-size: 1.2em;
-      font-weight: bold;
-      margin-top: 10px;
+    #result {
+      margin-top: 40px;
+      font-size: 2.5em;
+      min-height: 100px;
+      padding: 20px;
     }
 
     .common { color: green; }
     .uncommon { color: orange; }
     .rare { color: blue; }
     .ultrarare { color: purple; }
-    .legendary { color: red; text-shadow: 0 0 10px red; }
+    .legendary { color: red; text-shadow: 0 0 5px red; animation: shake 0.3s ease-in-out infinite; }
+
+    @keyframes shake {
+      0% { transform: rotate(1deg); }
+      50% { transform: rotate(-1deg); }
+      100% { transform: rotate(1deg); }
+    }
 
     footer {
-      margin-top: 50px;
+      margin-top: 60px;
       color: #888;
-      font-size: 0.9em;
     }
   </style>
 </head>
 <body>
 
-  <h1>🍽️ Family Meal Drop Rates</h1>
+  <h1>🍽️ Family Meal RNG</h1>
+  <button class="button" onclick="rollMeal()">Roll a Meal!</button>
+  <div id="result"></div>
 
-  <div id="meals"></div>
-
-  <footer>
-    Made by a hungry family. Powered by disappointment and pasta.
-  </footer>
+  <footer>Powered by gut instinct and weird family cravings</footer>
 
   <script>
     const meals = [
-      { name: '🍝 Pasta', rarity: 'Common' },
-      { name: '🥪 Ham Sandwich', rarity: 'Common' },
-      { name: '🍕 Pizza', rarity: 'Uncommon' },
-      { name: '🥗 Salad (the fake meal)', rarity: 'Uncommon' },
-      { name: '🥩 Steak', rarity: 'Rare' },
-      { name: '🍣 Sushi (only on birthdays)', rarity: 'Ultra Rare' },
-      { name: '🍜 Ramen', rarity: 'Rare' },
-      { name: '🦞 Lobster (??? how)', rarity: 'Legendary' },
-      { name: '🍛 Leftover Mystery Sludge', rarity: 'Common' },
-      { name: '🔥 Burnt Whatever', rarity: 'Ultra Rare' },
-      { name: '👻 Air (forgot to shop)', rarity: 'Legendary' },
-      { name: '💩 "It looked like food"', rarity: 'Legendary' }
+      { name: "🍝 Pasta", rarity: "Common", weight: 30 },
+      { name: "🍗 Chicken", rarity: "Common", weight: 30 },
+      { name: "🍲 Soup", rarity: "Common", weight: 30 },
+      { name: "🌮 Tacos", rarity: "Common", weight: 30 },
+      { name: "🍛 Leftovers", rarity: "Common", weight: 30 },
+      { name: "🍕 Pizza", rarity: "Uncommon", weight: 20 },
+      { name: "🥗 Salad with Chicken", rarity: "Uncommon", weight: 20 },
+      { name: "🛒 Sam's Club Food", rarity: "Uncommon", weight: 20 },
+      { name: "🥩 Steak", rarity: "Rare", weight: 10 },
+      { name: "🍗🍚 Chicken and Rice", rarity: "Rare", weight: 10 },
+      { name: "🥟 Pierogies", rarity: "Rare", weight: 10 },
+      { name: "🍢 Chicken Skewers", rarity: "Rare", weight: 10 },
+      { name: "💩 Crap", rarity: "Ultra Rare", weight: 3 },
+      { name: "🥩🦀 Steak and Crab", rarity: "Legendary", weight: 1 }
     ];
 
     const rarityClass = {
-      'Common': 'common',
-      'Uncommon': 'uncommon',
-      'Rare': 'rare',
-      'Ultra Rare': 'ultrarare',
-      'Legendary': 'legendary'
+      "Common": "common",
+      "Uncommon": "uncommon",
+      "Rare": "rare",
+      "Ultra Rare": "ultrarare",
+      "Legendary": "legendary"
     };
 
-    const mealContainer = document.getElementById('meals');
+    function rollMeal() {
+      const totalWeight = meals.reduce((acc, meal) => acc + meal.weight, 0);
+      let roll = Math.random() * totalWeight;
+      let selected;
 
-    meals.forEach(meal => {
-      const div = document.createElement('div');
-      div.classList.add('meal');
-      div.innerHTML = `
-        <div class="name">${meal.name}</div>
-        <div class="rarity ${rarityClass[meal.rarity]}">${meal.rarity}</div>
-      `;
-      mealContainer.appendChild(div);
-    });
+      for (let meal of meals) {
+        if (roll < meal.weight) {
+          selected = meal;
+          break;
+        }
+        roll -= meal.weight;
+      }
+
+      const result = document.getElementById('result');
+      result.innerHTML = `<div class="${rarityClass[selected.rarity]}">${selected.name} <br> <small>${selected.rarity}</small></div>`;
+    }
   </script>
 
 </body>
