@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Family Meal Drop Rates</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', sans-serif;
+      background-color: #fff8f0;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 3em;
+      margin-top: 30px;
+    }
+
+    .meal {
+      margin: 20px auto;
+      max-width: 600px;
+      background-color: #fffcf2;
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      position: relative;
+      transition: transform 0.2s ease;
+    }
+
+    .meal:hover {
+      transform: scale(1.03) rotate(1deg);
+    }
+
+    .name {
+      font-size: 2em;
+    }
+
+    .rarity {
+      font-size: 1.2em;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .common { color: green; }
+    .uncommon { color: orange; }
+    .rare { color: blue; }
+    .ultrarare { color: purple; }
+    .legendary { color: red; text-shadow: 0 0 10px red; }
+
+    footer {
+      margin-top: 50px;
+      color: #888;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🍽️ Family Meal Drop Rates</h1>
+
+  <div id="meals"></div>
+
+  <footer>
+    Made by a hungry family. Powered by disappointment and pasta.
+  </footer>
+
+  <script>
+    const meals = [
+      { name: '🍝 Pasta', rarity: 'Common' },
+      { name: '🥪 Ham Sandwich', rarity: 'Common' },
+      { name: '🍕 Pizza', rarity: 'Uncommon' },
+      { name: '🥗 Salad (the fake meal)', rarity: 'Uncommon' },
+      { name: '🥩 Steak', rarity: 'Rare' },
+      { name: '🍣 Sushi (only on birthdays)', rarity: 'Ultra Rare' },
+      { name: '🍜 Ramen', rarity: 'Rare' },
+      { name: '🦞 Lobster (??? how)', rarity: 'Legendary' },
+      { name: '🍛 Leftover Mystery Sludge', rarity: 'Common' },
+      { name: '🔥 Burnt Whatever', rarity: 'Ultra Rare' },
+      { name: '👻 Air (forgot to shop)', rarity: 'Legendary' },
+      { name: '💩 "It looked like food"', rarity: 'Legendary' }
+    ];
+
+    const rarityClass = {
+      'Common': 'common',
+      'Uncommon': 'uncommon',
+      'Rare': 'rare',
+      'Ultra Rare': 'ultrarare',
+      'Legendary': 'legendary'
+    };
+
+    const mealContainer = document.getElementById('meals');
+
+    meals.forEach(meal => {
+      const div = document.createElement('div');
+      div.classList.add('meal');
+      div.innerHTML = `
+        <div class="name">${meal.name}</div>
+        <div class="rarity ${rarityClass[meal.rarity]}">${meal.rarity}</div>
+      `;
+      mealContainer.appendChild(div);
+    });
+  </script>
+
+</body>
+</html>
